@@ -19,26 +19,6 @@ from pathlib import Path
 import requests
 
 
-"""
-# params = {
-#     "records_per_page": 50,
-#     "page": 1,
-# }
-#
-# url = "https://5ka.ru/api/v2/special_offers/"
-# headers = {
-#     "Accept": "application/json",
-#     "User-Agent": "Mozilla/5.0
-(Macintosh; Intel Mac OS X 10.16; rv:85.0)
-Gecko/20100101 Firefox/85.0",
-# }
-# response = requests.get(url, params=params, headers=headers)
-#
-# html_temp = Path(__file__).parent.joinpath("temp.html")
-# json_temp = Path(__file__).parent.joinpath("temp.json")
-# json_temp.write_text(response.text, encoding="UTF-8")
-"""
-
 
 class Parse5Ka:
     headers = {
@@ -56,7 +36,7 @@ class Parse5Ka:
         while True:
             response = requests.get(url, headers=self.headers)
             my_count=0
-            try:
+            while my_count<300:
                 my_count += 1
                 if response.ok:
                     return response
@@ -64,11 +44,6 @@ class Parse5Ka:
                 elif response.status_code >= 400:
                     print('Статус - код больше 399')
                     time.sleep(0.5)
-                elif my_count > 300:
-                    print('Превышено количество запросов')
-                    break
-            except Exception as e:
-                print('Ошибка при загрузке страницы:' + str(e))
 
     def run(self):
         for product in self._parse(self.start_url):
@@ -88,7 +63,6 @@ class Parse5Ka:
         jdata = json.dumps(data, ensure_ascii=False)
         file_path.write_text(jdata, encoding="UTF-8")
 
-
 class CategoriesParser(Parse5Ka):
     def __init__(self, categories_url: str, *args, **kwargs):
         self.categories_url = categories_url
@@ -106,7 +80,6 @@ class CategoriesParser(Parse5Ka):
             file_path = self.products_path.joinpath(f"{category['parent_group_code']}.json")
             category["products"].extend(list(self._parse(url)))
             self._save(category, file_path)
-
 
 def get_dir_path(dirname: str) -> Path:
     dir_path = Path(__file__).parent.joinpath(dirname)
