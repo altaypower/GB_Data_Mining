@@ -33,10 +33,10 @@ class Parse5Ka:
         self.products_path = products_path
 
     def _get_response(self, url):
+        my_count = 0
         while True:
-            response = requests.get(url, headers=self.headers)
-            my_count=0
-            while my_count<300:
+            try:
+                response = requests.get(url)
                 my_count += 1
                 if response.ok:
                     return response
@@ -44,6 +44,13 @@ class Parse5Ka:
                 elif response.status_code >= 400:
                     print('Статус - код больше 399')
                     time.sleep(0.5)
+                elif my_count > 30:
+                    print('Превышено количество запросов')
+                    break
+            # mistake for bad start_url
+            except requests.exceptions.MissingSchema as rem:
+                print(rem)
+                break
 
     def run(self):
         for product in self._parse(self.start_url):
