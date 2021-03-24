@@ -3,9 +3,9 @@ import dotenv
 from scrapy.crawler import CrawlerProcess
 from scrapy.settings import Settings
 from gb_parse.spiders.autoyoula import AutoyoulaSpider
-#from gb_parse.spiders.hh import HhSpider
-#from gb_parse.spiders.hh_company import HhCmpSpider
-from gb_parse.spiders.instagram import InstagramSpider
+from gb_parse.spiders.instagram7 import InstagramSpider
+#from gb_parse.spiders.zillow import ZillowSpider
+
 
 if __name__ == "__main__":
     dotenv.load_dotenv(".env")
@@ -19,5 +19,6 @@ if __name__ == "__main__":
         password=os.getenv("INST_PASSWORD"),
         tags=tags,
     )
+    # crawler_proc.crawl(ZillowSpider)
     crawler_proc.start()
 
