@@ -62,7 +62,6 @@ IMAGES_STORE = 'images'
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
-
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {

@@ -62,7 +62,6 @@ class Insta(scrapy.Item):
 class InstaTag(Insta):
     pass
 
-
 class InstaPost(Insta):
     pass
 

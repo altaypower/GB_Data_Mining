@@ -7,7 +7,6 @@ from gb_parse.spiders.instagram7 import InstagramSpider
 #from gb_parse.spiders.zillow import ZillowSpider
 
 
-
 if __name__ == "__main__":
     dotenv.load_dotenv(".env")
     tags = ["python"]
