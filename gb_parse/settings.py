@@ -67,7 +67,8 @@ IMAGES_STORE = 'images'
 ITEM_PIPELINES = {
     #'gb_parse.pipelines.GbImageDownloadPipeline': 200,
     'gb_parse.pipelines.GbParsePipeline': 300,
-    'gb_parse.pipelines.GbParseMongoPipeline': 400,
+    #'gb_parse.pipelines.GbParseMongoPipeline': 400,
+    'gb_parse.pipelines.GbParseSQLitePipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -55,31 +55,31 @@ class GbHHCmpItem(scrapy.Item):
 class Insta(scrapy.Item):
     _id = scrapy.Field()
     date_parse = scrapy.Field()
-    data = scrapy.Field()
-    photos = scrapy.Field()
+    #data = scrapy.Field()
+    #photos = scrapy.Field()
+    user_id = scrapy.Field()
+    user_name = scrapy.Field()
 
+class InstaUserItem(Insta):
+    date_parse = scrapy.Field()
+    user_id = scrapy.Field()
+    user_name = scrapy.Field()
+    depth = scrapy.Field()
+
+class InstaFollowItem(scrapy.Item):
+    user_id = scrapy.Field()
+    user_name = scrapy.Field()
+    follow_id = scrapy.Field()
+    follow_name = scrapy.Field()
+
+class InstaFollowedItem(scrapy.Item):
+    user_name = scrapy.Field()
+    user_id = scrapy.Field()
+    followed_name = scrapy.Field()
+    followed_id = scrapy.Field()
 
 class InstaTag(Insta):
     pass
 
 class InstaPost(Insta):
     pass
-
-class InstaUser(Insta):
-    pass
-
-class InstaFollow(scrapy.Item):
-    _id = scrapy.Field()
-    date_parse = scrapy.Field()
-    user_name = scrapy.Field()
-    user_id = scrapy.Field()
-    follow_name = scrapy.Field()
-    follow_id = scrapy.Field()
-
-class InstaFollowed(scrapy.Item):
-    _id = scrapy.Field()
-    date_parse = scrapy.Field()
-    user_name = scrapy.Field()
-    user_id = scrapy.Field()
-    followed_name = scrapy.Field()
-    followed_id = scrapy.Field()

@@ -7,7 +7,7 @@
 import datetime as dt
 import json
 import scrapy
-from ..items import InstaUser, InstaFollow, InstaFollowed
+from ..items import InstaUserItem, InstaFollowItem, InstaFollowedItem
 
 
 class InstagramSpider(scrapy.Spider):
@@ -22,10 +22,10 @@ class InstagramSpider(scrapy.Spider):
     }
 
     def __init__(self, login, password, *args, **kwargs):
-        self.tags = ["python", "программирование", "developers"]
         self.users = ["teslamotors"]
         self.login = login
         self.enc_passwd = password
+        self.followed_list = []
         super().__init__(*args, **kwargs)
 
     def parse(self, response, **kwargs):
@@ -50,7 +50,7 @@ class InstagramSpider(scrapy.Spider):
         user_data = self.js_data_extract(response)["entry_data"]["ProfilePage"][0]["graphql"][
             "user"
         ]
-        yield InstaUser(date_parse=dt.datetime.utcnow(), data=user_data)
+        #yield InstaUserItem(date_parse=dt.datetime.utcnow(), user_id=user_data['id'], user_name=user_data['username'])
 
         yield from self.get_api_follow_request(response, user_data)
 
@@ -70,9 +70,7 @@ class InstagramSpider(scrapy.Spider):
     def get_api_follow(self, response, user_data):
         if b"application/json" in response.headers["Content-Type"]:
             data = response.json()
-            yield from self.get_follow_item(
-                user_data, data["data"]["user"]["edge_follow"]["edges"]
-            )
+            yield from self.get_follow_item(self, user_data, data["data"]["user"]["edge_follow"]["edges"])
             if data["data"]["user"]["edge_follow"]["page_info"]["has_next_page"]:
                 variables = {
                     "id": user_data["id"],
@@ -82,16 +80,21 @@ class InstagramSpider(scrapy.Spider):
                 yield from self.get_api_follow_request(response, user_data, variables)
 
     @staticmethod
-    def get_follow_item(self, user_data, follow_users_data):
+    def get_follow_item(self, user_data, follow_users_data, meta = {'depth': 1}):
         for user in follow_users_data:
-            yield InstaFollow(
+            yield InstaFollowItem(
                 user_id=user_data["id"],  # этот пользователь
                 user_name=user_data["username"],
                 follow_id=user["node"]["id"],  # на этого пользователя
                 follow_name=user["node"]["username"],
             )
 
-            yield InstaUser(date_parse=dt.datetime.utcnow(), data=user["node"])
+            yield InstaUserItem(
+                date_parse=dt.datetime.utcnow(),
+                user_id=user["node"]["id"],
+                user_name=user["node"]["username"],
+                depth=meta['depth']
+            )
 
     def get_api_followed_request(self, response, user_data, variables=None):
         if not variables:
@@ -108,7 +111,7 @@ class InstagramSpider(scrapy.Spider):
         if b"application/json" in response.headers["Content-Type"]:
             data = response.json()
             yield from self.get_followed_item(
-                user_data, data["data"]["user"]["edge_followed_by"]["edges"]
+                self, user_data, data["data"]["user"]["edge_followed_by"]["edges"]
             )
             if data["data"]["user"]["edge_followed_by"]["page_info"]["has_next_page"]:
                 variables = {
@@ -119,17 +122,23 @@ class InstagramSpider(scrapy.Spider):
                 yield from self.get_api_followed_request(response, user_data, variables)
 
     @staticmethod
-    def get_followed_item(self, user_data, follow_users_data):
+    def get_followed_item(self, user_data, follow_users_data, meta = {'depth': 1}):
         for user in follow_users_data:
-            yield InstaFollowed(
-                user_id=user_data["id"],  # этот пользователь
-                user_name=user_data["username"],
-                followed_id=user["node"]["id"],  # на этого пользователя
-                followed_name=user["node"]["username"],
-            )
+            self.followed_list.append(user["node"]["id"])
 
-            yield InstaUser(date_parse=dt.datetime.utcnow(), data=user["node"])
+            #yield InstaFollowedItem(
+             #   user_id=user_data["id"],  # этот пользователь
+              #  user_name=user_data["username"],
+               # followed_id=user["node"]["id"],  # на этого пользователя
+                #followed_name=user["node"]["username"],
+            #)
 
+            #yield InstaUserItem(
+             #   date_parse=dt.datetime.utcnow(),
+              #  user_id=user["node"]["id"],
+               # user_name=user["node"]["username"],
+                #meta=meta['depth']
+            #)
 
     @staticmethod
     def js_data_extract(response):

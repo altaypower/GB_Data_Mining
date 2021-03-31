@@ -19,8 +19,5 @@ if __name__ == "__main__":
         password=os.getenv("INST_PASSWORD"),
         tags=tags,
     )
-    # crawler_proc.crawl(ZillowSpider)
     crawler_proc.start()
-
-
 
