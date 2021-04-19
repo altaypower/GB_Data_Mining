@@ -25,7 +25,7 @@ CONCURRENT_REQUESTS = 32
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 1.2
+DOWNLOAD_DELAY = 8
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -52,9 +52,12 @@ IMAGES_STORE = 'images'
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'gb_parse.middlewares.GbParseDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+    #'gb_parse.middlewares.GbParseDownloaderMiddleware': 600,
+    'gb_parse.middlewares.TooManyRequestsRetryMiddleware': 543,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
+    #'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 750,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -75,12 +78,12 @@ ITEM_PIPELINES = {
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-AUTOTHROTTLE_START_DELAY = 2
+AUTOTHROTTLE_START_DELAY = 8
 # The maximum download delay to be set in case of high latencies
 AUTOTHROTTLE_MAX_DELAY = 10
 # The average number of requests Scrapy should be sending in parallel to
 # each remote server
-#AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 # Enable showing throttling stats for every response received:
 AUTOTHROTTLE_DEBUG = True
 
@@ -91,3 +94,10 @@ AUTOTHROTTLE_DEBUG = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+RETRY_HTTP_CODES = [429]
+
+#DOWNLOADER_MIDDLEWARES = {
+ #   'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
+  #  'flat.middlewares.TooManyRequestsRetryMiddleware': 543,
+#}

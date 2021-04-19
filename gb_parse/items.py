@@ -69,14 +69,36 @@ class InstaUserItem(Insta):
 class InstaFollowItem(scrapy.Item):
     user_id = scrapy.Field()
     user_name = scrapy.Field()
+    user_depth = scrapy.Field()
     follow_id = scrapy.Field()
     follow_name = scrapy.Field()
+    follow_depth = scrapy.Field()
 
 class InstaFollowedItem(scrapy.Item):
     user_name = scrapy.Field()
     user_id = scrapy.Field()
     followed_name = scrapy.Field()
     followed_id = scrapy.Field()
+
+class InstaUserItem2(Insta):
+    date_parse = scrapy.Field()
+    user_id2 = scrapy.Field()
+    user_name2 = scrapy.Field()
+    depth2 = scrapy.Field()
+
+class InstaFollowItem2(scrapy.Item):
+    user_id2 = scrapy.Field()
+    user_name2 = scrapy.Field()
+    user_depth2 = scrapy.Field()
+    follow_id2 = scrapy.Field()
+    follow_name2 = scrapy.Field()
+    follow_depth2 = scrapy.Field()
+
+class InstaFollowedItem2(scrapy.Item):
+    user_name2 = scrapy.Field()
+    user_id2 = scrapy.Field()
+    followed_name2 = scrapy.Field()
+    followed_id2 = scrapy.Field()
 
 class InstaTag(Insta):
     pass

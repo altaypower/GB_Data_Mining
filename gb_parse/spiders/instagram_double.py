@@ -7,11 +7,11 @@
 import datetime as dt
 import json
 import scrapy
-from ..items import InstaUserItem, InstaFollowItem, InstaFollowedItem
+from ..items import InstaUserItem2, InstaFollowItem2, InstaFollowedItem2
 
 
 class InstagramSpider(scrapy.Spider):
-    name = "instagram7"
+    name = "instagram_double"
     allowed_domains = ["www.instagram.com"]
     start_urls = ["https://www.instagram.com/"]
     login_url = "https://www.instagram.com/accounts/login/ajax/"
@@ -24,8 +24,10 @@ class InstagramSpider(scrapy.Spider):
     def __init__(self, login, password, *args, **kwargs):
         #self.users = ["markovsk29"]
         #self.users = ["grigorev_igor"]
-        self.users = ["yakalexdmitriy"]
+        #self.users = ["yakalexdmitriy"]
         #self.users = ["proskunova_anastasiya"]
+        #self.users = ["dimitrii9714"]
+        self.users = ["salfetka_pro"]
         self.login = login
         self.login = login
         self.enc_passwd = password
@@ -55,7 +57,7 @@ class InstagramSpider(scrapy.Spider):
     def user_page_parse(self, response):
         user_data = self.js_data_extract(response)["entry_data"]["ProfilePage"][0]["graphql"]["user"]
         user_data["depth"] = self.depth
-        yield InstaUserItem(date_parse=dt.datetime.utcnow(), user_id=user_data['id'], user_name=user_data['username'], depth=user_data["depth"])
+        yield InstaUserItem2(date_parse=dt.datetime.utcnow(), user_id2=user_data['id'], user_name2=user_data['username'], depth2=user_data["depth"])
 
         yield from self.get_api_follow_request(response, user_data)
 
@@ -87,13 +89,13 @@ class InstagramSpider(scrapy.Spider):
     @staticmethod
     def get_follow_item(self, user_data, follow_users_data):
         for user in follow_users_data:
-            yield InstaFollowItem(
-                user_id=user_data["id"],  # этот пользователь
-                user_name=user_data["username"],
-                user_depth=user_data["depth"],
-                follow_id=user["node"]["id"],  # на этого пользователя
-                follow_name=user["node"]["username"],
-                follow_depth=(user_data["depth"] + 1),
+            yield InstaFollowItem2(
+                user_id2=user_data["id"],  # этот пользователь
+                user_name2=user_data["username"],
+                user_depth2=user_data["depth"],
+                follow_id2=user["node"]["id"],  # на этого пользователя
+                follow_name2=user["node"]["username"],
+                follow_depth2=(user_data["depth"] + 1),
             )
             user_name=user["node"]["username"]
             self.depth = (user_data["depth"] + 1)
@@ -102,13 +104,6 @@ class InstagramSpider(scrapy.Spider):
             else:
                 self.depth -= 1
                 continue
-
-            #yield InstaUserItem(
-             #   date_parse=dt.datetime.utcnow(),
-              #  user_id=user["node"]["id"],
-               # user_name=user["node"]["username"],
-                #depth=meta['depth']
-            #)
 
     def get_api_followed_request(self, response, user_data, variables=None):
         if not variables:
@@ -140,19 +135,13 @@ class InstagramSpider(scrapy.Spider):
         for user in follow_users_data:
             self.followed_list.append(user["node"]["id"])
 
-            yield InstaFollowedItem(
-                user_id=user_data["id"],  # этот пользователь
-                user_name=user_data["username"],
-                followed_id=user["node"]["id"],  # на этого пользователя
-                followed_name=user["node"]["username"],
+            yield InstaFollowedItem2(
+                user_id2=user_data["id"],  # этот пользователь
+                user_name2=user_data["username"],
+                followed_id2=user["node"]["id"],  # на этого пользователя
+                followed_name2=user["node"]["username"],
             )
 
-            #yield InstaUserItem(
-             #   date_parse=dt.datetime.utcnow(),
-              #  user_id=user["node"]["id"],
-               # user_name=user["node"]["username"],
-                #meta=meta['depth']
-            #)
 
     @staticmethod
     def js_data_extract(response):

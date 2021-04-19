@@ -5,7 +5,7 @@ from scrapy.settings import Settings
 from gb_parse.spiders.autoyoula import AutoyoulaSpider
 #from gb_parse.spiders.instagram7 import InstagramSpider
 #from gb_parse.spiders.zillow import ZillowSpider
-from gb_parse.spiders.instagram7 import InstagramSpider
+from gb_parse.spiders.instagram_double import InstagramSpider
 
 if __name__ == "__main__":
     dotenv.load_dotenv(".env")
@@ -20,3 +20,4 @@ if __name__ == "__main__":
         tags=tags,
     )
     crawler_proc.start()
+
