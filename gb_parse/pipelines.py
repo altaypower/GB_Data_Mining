@@ -8,10 +8,26 @@
 from itemadapter import ItemAdapter
 from pymongo import MongoClient
 
+from itemadapter import ItemAdapter
+from scrapy.exceptions import DropItem
+
 
 class GbParsePipeline:
     def process_item(self, item, spider):
         return item
+
+#class DuplicatesPipeline:
+#
+ #   def __init__(self):
+  #      self.ids_seen = set()
+#
+ #   def process_item(self, item, spider):
+  #      adapter = ItemAdapter(item)
+   #     if adapter['url'] in self.ids_seen:
+    #        raise DropItem(f"Duplicate item found: {item!r}")
+     #   else:
+      #      self.ids_seen.add(adapter['url'])
+       #     return item
 
 
 class GbParseMongoPipeline:
@@ -23,3 +39,4 @@ class GbParseMongoPipeline:
         self.db[type(item).__name__].insert_one(item)
         #self.db[spider.name].insert_one(item)
         return item
+

@@ -28,7 +28,13 @@ class HhSpider(scrapy.Spider):
     name = "hh"
     allowed_domains = ["hh.ru"]
     start_urls = [
-        "https://novosibirsk.hh.ru/search/vacancy?schedule=remote&L_profession_id=0&area=113"
+        "https://novosibirsk.hh.ru/search/vacancy?clusters=true&area=4&enable_snippets=true&salary=&st=searchVacancy&text=Data+Scientist",
+        "https://novosibirsk.hh.ru/search/vacancy?area=4&clusters=true&enable_snippets=true&text=data+analyst&from=SIMILAR_QUERY",
+        "https://novosibirsk.hh.ru/search/vacancy?area=4&fromSearchLine=true&st=searchVacancy&text=data+science",
+        "https://novosibirsk.hh.ru/search/vacancy?clusters=true&area=4&enable_snippets=true&salary=&st=searchVacancy&text=Data+Engineer",
+        "https://novosibirsk.hh.ru/search/vacancy?clusters=true&area=4&enable_snippets=true&salary=&st=searchVacancy&text=Machine+learning&from=suggest_post",
+        "https://novosibirsk.hh.ru/search/vacancy?clusters=true&area=4&enable_snippets=true&salary=&st=searchVacancy&text=NLP",
+        "https://novosibirsk.hh.ru/search/vacancy?clusters=true&area=4&enable_snippets=true&salary=&st=searchVacancy&text=Computer+Vision",
     ]
 
 

@@ -42,6 +42,8 @@ HH_VACANCY_XPATH = {
     'div[contains(@data-qa, "skills-element")]/'
     'span[@data-qa="bloko-tag__text"]/text()',
     "author": '//a[@data-qa="vacancy-company-name"]/@href',
+    "created_at": '//p[@class="vacancy-creation-time"]/text()',
+
 }
 
 HH_AUTHOR_XPATH = {

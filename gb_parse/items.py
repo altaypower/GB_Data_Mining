@@ -32,6 +32,7 @@ class GbHHItem(scrapy.Item):
     description = scrapy.Field()
     skills = scrapy.Field()
     author = scrapy.Field(output_processor=TakeFirst())
+    created_at = scrapy.Field()
 
 class GbHHCompanyItem(scrapy.Item):
     _id = scrapy.Field()
